@@ -77,14 +77,14 @@ class CombineTrie(Trie):
         """
         curr_node = self
         # Keep the price of longest matched prefix for each operator
-        result = {}
+        price_dict = {}
         for edge in str(number):
             if edge not in curr_node.next:
                 break
             curr_node = curr_node.next[edge]
             if len(curr_node.price_dict) > 0:
-                result |= curr_node.price_dict
-        return result
+                price_dict |= curr_node.price_dict
+        return price_dict
 
     def get_instance(self):
         return CombineTrie()
