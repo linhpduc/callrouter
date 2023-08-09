@@ -33,8 +33,8 @@ would be better if we have only one trie object to manipulate.
 
 In combined trie, each node in trie will store a hashmap of `<operator: price>`.
 
-With a certain phone number, traverse the nodes until it reaches the leaf node, browse the nodes until reaching
-the leaf node, at each step, save the most recent price of each operator (if any).
+With a certain phone number, traverse the nodes until reaching the leaf node, at each step, save the most recent price
+of each operator (if any).
 
 In the end, we have a **hashmap** that stores the prices of all the operators whose prefix matches that phone number.
 The last thing is to determine which price is the cheapest in this **hashmap**.
