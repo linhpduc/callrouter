@@ -65,6 +65,45 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
 
 ![Illustration for the 2nd idea](./assests/calllrouter-appr02.png "Build a combined trie for all operators")
 
+## How to run
+
+### Required
+
+* Python: 3.10+
+* Packages: `coverage`
+
+### Run test
+```console
+ % coverage run -m unittest -v
+test_mul_operator_combine_trie (__main__.FindCheapestPriceTestCase) ... ok
+test_mul_operator_mul_trie (__main__.FindCheapestPriceTestCase) ... ok
+test_prefix_namedtuple (__main__.ModelTestCase) ... ok
+test_create_combine_trie (__main__.TrieTestCase) ... ok
+test_create_single_trie (__main__.TrieTestCase) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+% coverage report         
+Name                   Stmts   Miss  Cover
+------------------------------------------
+router.py                 26      1    96%
+testcases.py              31      1    97%
+utils/__init__.py          0      0   100%
+utils/data_sample.py       1      0   100%
+utils/models.py            8      0   100%
+utils/trie.py             47      2    96%
+------------------------------------------
+TOTAL                    113      4    96%
+```
+
+### Run program
+```
+%  python3 main.py 4673212345 449102837332 84987654321
+[(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
+```
+
 ## Discussions
 
 - If we just have only one process and one thread program, the **appr#2** can reduce memory to store trie object, we
@@ -78,17 +117,3 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
   to scale indefinitely.
 - If we need to handle a large number of phone number routing requests simultaneously, the **appr#02** is a good
   candidate by using multiprocessing, each call routing request will be handled by a separate process.
-
-## How to run
-
-### Pre-required
-
-* Python 3.10+
-* No external libraries are required
-
-### Run
-
-```commandline
-$ python3 main.py 4673212345 449102837332
-[(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5)]
-```
