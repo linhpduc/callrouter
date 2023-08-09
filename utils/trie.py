@@ -3,7 +3,7 @@ author: @linhpduc
 """
 
 from abc import ABC, abstractmethod
-from models import PrefixNode
+from utils.models import PrefixNode
 
 
 class Trie(ABC):
