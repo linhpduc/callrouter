@@ -6,6 +6,30 @@ The programming exercise with valuechecker{dot}ai
 * Start date: 8/4/2023
 * Deadline: 8/10/2023
 
+## Data sample
+
+```python
+price_list_sample = {
+    "A": [
+        ("1", 0.9),
+        ("268", 5.1),
+        ("46", 0.17),
+        ("4620", 0.0),
+        ("468", 0.15),
+        ("4631", 0.15),
+        ("4673", 0.9),
+        ("46732", 1.1),
+    ],
+    "B": [
+        ("1", 0.92),
+        ("44", 0.5),
+        ("46", 0.2),
+        ("467", 1.0),
+        ("48", 1.2),
+    ],
+}
+```
+
 ## Intuition
 
 This challenge is similar with the autocomplete searching problem using trie. Intuitively, trie (maybe) is a good fit
@@ -54,3 +78,17 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
   to scale indefinitely.
 - If we need to handle a large number of phone number routing requests simultaneously, the **appr#02** is a good
   candidate by using multiprocessing, each call routing request will be handled by a separate process.
+
+## How to run
+
+### Pre-required
+
+* Python 3.10+
+* No external libraries are required
+
+### Run
+
+```commandline
+$ python3 main.py 4673212345 449102837332
+[(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5)]
+```
