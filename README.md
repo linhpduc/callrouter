@@ -73,8 +73,9 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
 * Packages: `coverage`
 
 ### Run test
+
 ```console
- % coverage run -m unittest -v
+% coverage run -m unittest -v
 test_mul_operator_combine_trie (__main__.FindCheapestPriceTestCase) ... ok
 test_mul_operator_mul_trie (__main__.FindCheapestPriceTestCase) ... ok
 test_prefix_namedtuple (__main__.ModelTestCase) ... ok
@@ -99,21 +100,23 @@ TOTAL                    113      4    96%
 ```
 
 ### Run program
-```
+
+```console
 %  python3 main.py 4673212345 449102837332 84987654321
 [(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
 ```
 
 ## Discussions
 
-- If we just have only one process and one thread program, the **appr#2** can reduce memory to store trie object, we
-  also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really better
-  than **appr#01**.
+- If we just have only one process and one thread program, the **appr#2** can reduce memory space to store trie object,
+  we also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really
+  better than **appr#01**.
 - In both approaches, multithreading does not help speed up the program, because it's **CPU bound** task and limitation
   of Python **GIL** (Global Interpreter Locking).
-- With single request, using **appr#1** we have a good chance to run the program in parallel for a part of program,
-  taking advantage of the cpu with many cores, each trie and search operation on it (for a certain operator) can be
-  handled by a completely separate process. Or imagine a scenario using **map-reduce architecture** if the problem needs
-  to scale indefinitely.
+- With single request, using **appr#1** we have a good chance to run the program in parallel for a part of program (
+  build trie and search on it), taking advantage of the cpu with many cores, each trie and search operation on it (for a
+  certain operator) can be handled by a completely separate process. Or imagine a scenario using **map-reduce
+  architecture** if the problem needs to scale indefinitely.
 - If we need to handle a large number of phone number routing requests simultaneously, the **appr#02** is a good
-  candidate by using multiprocessing, each call routing request will be handled by a separate process.
+  candidate to choose. Using multiprocessing, each request is handled by 1 separate process. But we won't reduce the
+  memory space anymore (even increase), because each "fork" process will clone the memory.
