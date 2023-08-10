@@ -110,7 +110,17 @@ TOTAL                    113      4    96%
 
 - If we just have only one process and one thread program, the **appr#2** can reduce memory space to store trie object,
   we also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really
-  better than **appr#01**.
+  better than **appr#01**. Here is the test result with 1_000_000 input random numbers: 
+```console
+Single Trie:
+        +time elapsed: 0.625948s
+        +size of trie: 232 bytes
+--------------------------------------------------
+Combine Trie:
+        +time elapsed: 0.450741s
+        +size of trie: 48 bytes
+--------------------------------------------------
+```
 - In both approaches, multithreading does not help speed up the program, because it's **CPU bound** task and limitation
   of Python **GIL** (Global Interpreter Locking).
 - With single request, using **appr#1** we have a good chance to run the program in parallel for a part of program (
