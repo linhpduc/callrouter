@@ -76,48 +76,60 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
 
 ```console
 % coverage run -m unittest -v
-test_mul_operator_combine_trie (__main__.FindCheapestPriceTestCase) ... ok
-test_mul_operator_mul_trie (__main__.FindCheapestPriceTestCase) ... ok
-test_prefix_namedtuple (__main__.ModelTestCase) ... ok
-test_create_combine_trie (__main__.TrieTestCase) ... ok
-test_create_single_trie (__main__.TrieTestCase) ... ok
+test_init_trie (testcases.FindCheapestPriceTestCase) ... ok
+test_mul_operator_combine_trie (testcases.FindCheapestPriceTestCase) ... ok
+test_single_trie (testcases.FindCheapestPriceTestCase) ... ok
+test_prefix_namedtuple (testcases.ModelTestCase) ... ok
+test_create_combine_trie (testcases.TrieTestCase) ... ok
+test_create_single_trie (testcases.TrieTestCase) ... ok
 
 ----------------------------------------------------------------------
-Ran 5 tests in 0.000s
+Ran 6 tests in 0.000s
 
 OK
-% coverage report         
+% coverage report
 Name                   Stmts   Miss  Cover
 ------------------------------------------
-router.py                 26      1    96%
-testcases.py              31      1    97%
+router.py                 28      0   100%
+testcases.py              36      1    97%
 utils/__init__.py          0      0   100%
 utils/data_sample.py       1      0   100%
 utils/models.py            8      0   100%
 utils/trie.py             47      2    96%
 ------------------------------------------
-TOTAL                    113      4    96%
+TOTAL                    120      3    98%
 ```
 
 ### Run program
 
 ```console
-%  python3 main.py 4673212345 449102837332 84987654321
-[(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
+% python3 main.py 4673212345 449102837332 84987654321
+Results: 
+        [(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
+Single Trie:
+        +time elapsed: 0.000060s
+        +size of trie: 232 bytes
+--------------------------------------------------
+Results: 
+        [(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
+Combine Trie:
+        +time elapsed: 0.000032s
+        +size of trie: 48 bytes
+--------------------------------------------------
 ```
 
 ## Discussions
 
 - If we just have only one process and one thread program, the **appr#2** can reduce memory space to store trie object,
   we also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really
-  better than **appr#01**. Here is the test result with 1_000_000 input random numbers: 
+  better than **appr#01**. Here is the test result with 10_000_000 input random numbers: 
 ```console
 Single Trie:
-        +time elapsed: 0.625948s
+        +time elapsed: 6.993801s
         +size of trie: 232 bytes
 --------------------------------------------------
 Combine Trie:
-        +time elapsed: 0.450741s
+        +time elapsed: 4.931440s
         +size of trie: 48 bytes
 --------------------------------------------------
 ```

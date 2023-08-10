@@ -21,7 +21,7 @@ def main_combine_trie(numbers, test_perf: bool = False):
     print("Combine Trie:")
     print(f"\t+time elapsed: {elapsed:.6f}s")
     print(f"\t+size of trie: {sys.getsizeof(trie)} bytes")
-    print("-"*50)
+    print("-" * 50)
 
 
 def main_single_trie(numbers, test_perf: bool = False):
@@ -37,16 +37,18 @@ def main_single_trie(numbers, test_perf: bool = False):
     print("Single Trie:")
     print(f"\t+time elapsed: {elapsed:.6f}s")
     print(f"\t+size of trie: {sys.getsizeof(trie_dict)} bytes")
-    print("-"*50)
+    print("-" * 50)
 
 
 def main_test_perf():
-    numbers = [str(random.randint(1_000_000_000, 9_999_999_9999)) for _ in range(1_000_000)]
+    numbers = [
+        str(random.randint(1_000_000_000, 9_999_999_9999)) for _ in range(10_000_000)
+    ]
     main_single_trie(numbers, test_perf=True)
     main_combine_trie(numbers, test_perf=True)
 
 
 if __name__ == "__main__":
-    # main_single_trie(sys.argv[1:])
+    main_single_trie(sys.argv[1:])
     main_combine_trie(sys.argv[1:])
     # main_test_perf()
