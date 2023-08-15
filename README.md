@@ -104,7 +104,7 @@ TOTAL                    148      3    98%
 ### Run program
 
 ```console
- % python3 main.py simple 46743212345 89373822722 24628273929 11282739293 4429283473473
+% python3 main.py simple 46743212345 89373822722 24628273929 11282739293 4429283473473
 [MODE=SIMPLE]
 - results: [(prefix: '46', operator: 'A', price: 0.17), None, None, (prefix: '1', operator: 'A', price: 0.9), (prefix: '44', operator: 'B', price: 0.5)]
 - time elapsed: 0.000047s
