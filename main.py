@@ -23,21 +23,25 @@ def search_in_bulk(numbers: list, mode: str, test_perf: bool = False):
     print("-" * 32)
 
 
-def main():
-    try:
-        search_in_bulk(mode=sys.argv[1], numbers=sys.argv[2:])
-    except InvalidRunningMode as e:
-        print(f"'{e}': INVALID RUNNING MODE.")
-
-
 def evaluate_perf():
     numbers = [
-        str(random.randint(1_000_000_000, 9_999_999_9999)) for _ in range(1_000_000)
+        str(random.randint(1_000_000_000, 9_999_999_9999)) for _ in range(10_000_000)
     ]
     search_in_bulk(numbers=numbers, mode="simple", test_perf=True)
     search_in_bulk(numbers=numbers, mode="advanced", test_perf=True)
 
 
+def main():
+    try:
+        if sys.argv[1] == "test-perf":
+            evaluate_perf()
+        else:
+            search_in_bulk(mode=sys.argv[1], numbers=sys.argv[2:])
+    except InvalidRunningMode as e:
+        print(f"'{e}': INVALID RUNNING MODE.")
+    except IndexError as e:
+        print(e)
+
+
 if __name__ == "__main__":
     main()
-    # evaluate_perf()

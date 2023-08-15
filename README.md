@@ -76,46 +76,46 @@ The last thing is to determine which price is the cheapest in this **hashmap**.
 
 ```console
 % coverage run -m unittest -v
-test_init_trie (testcases.FindCheapestPriceTestCase) ... ok
-test_mul_operator_combine_trie (testcases.FindCheapestPriceTestCase) ... ok
-test_single_trie (testcases.FindCheapestPriceTestCase) ... ok
-test_prefix_namedtuple (testcases.ModelTestCase) ... ok
-test_create_combine_trie (testcases.TrieTestCase) ... ok
-test_create_single_trie (testcases.TrieTestCase) ... ok
+test_prefix_namedtuple (tests.test_cases.PriceItemTestCase) ... ok
+test_router_advanced (tests.test_cases.RouterTestCase) ... ok
+test_router_factory (tests.test_cases.RouterTestCase) ... ok
+test_router_simple (tests.test_cases.RouterTestCase) ... ok
+test_trie_init (tests.test_cases.TrieTestCase) ... ok
+test_trie_insert (tests.test_cases.TrieTestCase) ... ok
+test_trie_search (tests.test_cases.TrieTestCase) ... ok
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0.000s
+Ran 7 tests in 0.001s
 
 OK
-% coverage report
-Name                   Stmts   Miss  Cover
-------------------------------------------
-router.py                 28      0   100%
-testcases.py              36      1    97%
-utils/__init__.py          0      0   100%
+% coverage report -m
+Name                   Stmts   Miss  Cover   Missing
+----------------------------------------------------
+router.py                 51      2    96%   14, 18
+tests/__init__.py          0      0   100%
+tests/test_cases.py       60      1    98%   111
+utils/__init__.py          8      0   100%
 utils/data_sample.py       1      0   100%
-utils/models.py            8      0   100%
-utils/trie.py             47      2    96%
-------------------------------------------
-TOTAL                    120      3    98%
+utils/trie.py             28      0   100%
+----------------------------------------------------
+TOTAL                    148      3    98%
 ```
 
 ### Run program
 
 ```console
-% python3 main.py 4673212345 449102837332 84987654321
-Results: 
-        [(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
-Single Trie:
-        +time elapsed: 0.000060s
-        +size of trie: 232 bytes
---------------------------------------------------
-Results: 
-        [(prefix: '467', operator: 'B', price: 1.0), (prefix: '44', operator: 'B', price: 0.5), None]
-Combine Trie:
-        +time elapsed: 0.000032s
-        +size of trie: 48 bytes
---------------------------------------------------
+ % python3 main.py simple 46743212345 89373822722 24628273929 11282739293 4429283473473
+[MODE=SIMPLE]
+- results: [(prefix: '46', operator: 'A', price: 0.17), None, None, (prefix: '1', operator: 'A', price: 0.9), (prefix: '44', operator: 'B', price: 0.5)]
+- time elapsed: 0.000047s
+- size of trie(s): 232 bytes
+--------------------------------
+% python3 main.py advanced 46743212345 89373822722 24628273929 11282739293 4429283473473
+[MODE=ADVANCED]
+- results: [(prefix: '46', operator: 'A', price: 0.17), None, None, (prefix: '1', operator: 'A', price: 0.9), (prefix: '44', operator: 'B', price: 0.5)]
+- time elapsed: 0.000037s
+- size of trie(s): 48 bytes
+--------------------------------
 ```
 
 ## Discussions
@@ -124,14 +124,15 @@ Combine Trie:
   we also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really
   better than **appr#01**. Here is the test result with 10_000_000 input random numbers: 
 ```console
-Single Trie:
-        +time elapsed: 6.993801s
-        +size of trie: 232 bytes
---------------------------------------------------
-Combine Trie:
-        +time elapsed: 4.931440s
-        +size of trie: 48 bytes
---------------------------------------------------
+% python3 main.py test_perf
+[MODE=SIMPLE]
+- time elapsed: 7.404595s
+- size of trie(s): 232 bytes
+--------------------------------
+[MODE=ADVANCED]
+- time elapsed: 5.088647s
+- size of trie(s): 48 bytes
+--------------------------------
 ```
 - In both approaches, multithreading does not help speed up the program, because it's **CPU bound** task and limitation
   of Python **GIL** (Global Interpreter Locking).
