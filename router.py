@@ -1,49 +1,71 @@
 """
 author: @linhpduc
 """
+import sys
+from typing import Any, Dict
+from abc import ABC, abstractmethod
+from utils import PriceItem
+from utils.trie import Trie
 
-from typing import Any
-from utils.models import PrefixNode
-from utils.trie import SingleTrie, CombineTrie
+
+class Router(ABC):
+    @abstractmethod
+    def find_cheapest_price_by(self, number: str):
+        pass
+
+    @abstractmethod
+    def get_size(self):
+        pass
 
 
-def init_trie(trie_type: str, price_data: dict) -> Any:
-    if trie_type == "combined":
-        trie = CombineTrie()
+class SimpleRouter(Router):
+    def __init__(self, price_data: Dict) -> None:
+        self.trie_dict = {}
         for operator, price_list in price_data.items():
-            trie.load_price_into_trie(operator=operator, price_list=price_list)
-        return trie
-    else:
-        trie_dict = {}
-        for operator, price_list in price_data.items():
-            trie_dict[operator] = SingleTrie()
-            trie_dict[operator].load_price_into_trie(
+            self.trie_dict[operator] = Trie()
+            self.trie_dict[operator].load_prices(
                 operator=operator, price_list=price_list
             )
-        return trie_dict
+
+    def find_cheapest_price_by(self, number: str) -> Any:
+        cheapest = PriceItem()
+        for operator, trie in self.trie_dict.items():
+            result = trie.search(number)  # {'A': (1.1, '467')}
+            if len(result) > 0 and result[operator][0] < cheapest.price:
+                cheapest = PriceItem(operator, result[operator][1], result[operator][0])
+        return cheapest if cheapest.operator else None
+
+    def get_size(self):
+        return sys.getsizeof(self.trie_dict)
 
 
-def find_cheapest_price_using_single_trie(trie_dict: dict[str: SingleTrie], number: str) -> Any:
-    cheapest = PrefixNode()
-    for operator, trie in trie_dict.items():
-        result = trie.search(number)
-        if len(result) > 0 and result[operator][0] < cheapest.price:
-            cheapest = PrefixNode(
-                operator=operator,
-                prefix=result[operator][1],
-                price=result[operator][0],
-            )
-    return cheapest if cheapest.operator else None
+class AdvancedRouter(Router):
+    def __init__(self, price_data: Dict) -> None:
+        self.trie = Trie()
+        for operator, price_list in price_data.items():
+            self.trie.load_prices(operator=operator, price_list=price_list)
+
+    def find_cheapest_price_by(self, number: str) -> Any:
+        cheapest = PriceItem()
+        result = self.trie.search(number)  # {'A': (1.1, '467'), 'B': (1.0, '46732')}
+        for operator, (price, prefix) in result.items():
+            if price < cheapest.price:
+                cheapest = PriceItem(operator, prefix, price)
+        return cheapest if cheapest.operator else None
+
+    def get_size(self):
+        return sys.getsizeof(self.trie)
 
 
-def find_cheapest_price_using_combine_trie(trie: CombineTrie, number: str) -> Any:
-    cheapest = PrefixNode()
-    result = trie.search(number)
-    for operator, (price, prefix) in result.items():
-        if price < cheapest.price:
-            cheapest = PrefixNode(
-                operator=operator,
-                prefix=result[operator][1],
-                price=result[operator][0],
-            )
-    return cheapest if cheapest.operator else None
+class InvalidRunningMode(NotImplementedError):
+    pass
+
+
+def router_factory(data: Dict, mode: str = "advanced") -> Router:
+    match mode:
+        case "simple":
+            return SimpleRouter(price_data=data)
+        case "advanced":
+            return AdvancedRouter(price_data=data)
+        case _:
+            raise InvalidRunningMode(mode)
