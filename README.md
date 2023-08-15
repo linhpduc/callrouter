@@ -124,7 +124,7 @@ TOTAL                    148      3    98%
   we also need only one searching operation (per phone number) to determine the cheapest price. So that, it's really
   better than **appr#01**. Here is the test result with 10_000_000 input random numbers: 
 ```console
-% python3 main.py test_perf
+% python3 main.py test-perf
 [MODE=SIMPLE]
 - time elapsed: 7.404595s
 - size of trie(s): 232 bytes
