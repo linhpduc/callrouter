@@ -57,7 +57,7 @@ class AdvancedRouter(Router):
         return sys.getsizeof(self.trie)
 
 
-class InvalidRunningMode(NotImplementedError):
+class InvalidRunningMode(ValueError):
     pass
 
 
